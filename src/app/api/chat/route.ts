@@ -37,12 +37,12 @@ export async function POST(req: NextRequest) {
 
     const conversationWithSystem = [systemMessage, ...messages];
     
-    console.log("Using Groq SDK with model: deepseek-r1-distill-llama-70b");
+    console.log("Using Groq SDK with model: gemma2-9b-it");
     
     try {
       const completion = await groq.chat.completions.create({
         messages: conversationWithSystem,
-        model: "deepseek-r1-distill-llama-70b",
+        model: "gemma2-9b-it",
         temperature: 0.7,
         max_tokens: 2048,
       });

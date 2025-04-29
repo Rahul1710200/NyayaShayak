@@ -19,9 +19,9 @@ export default function ClientLayout({
 
   return (
     <>
-      {isSignedIn && <Navbar />}
+      <Navbar />
       <main>{children}</main>
-      {isSignedIn && <Footer />}
+     <Footer />
     </>
   );
 }

@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import { Scale, Brain, AlertTriangle } from 'lucide-react';
 
