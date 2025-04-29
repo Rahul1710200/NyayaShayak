@@ -18,11 +18,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-black text-white min-h-screen`}>
         <ClerkProvider>
+      <body className={`${inter.className} bg-black text-white min-h-screen`}>
           <ClientLayout>{children}</ClientLayout>
-        </ClerkProvider>
       </body>
+        </ClerkProvider>
     </html>
   );
 }

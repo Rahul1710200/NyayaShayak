@@ -1,10 +1,26 @@
 "use client";
 
-import React from 'react';
+import React,{useEffect} from 'react';
 import Link from 'next/link';
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 import { Scale, ArrowRight, FileText, Landmark, Shield, Users, ShoppingBag, Briefcase, HomeIcon, Globe, MessageSquare } from 'lucide-react';
 
 export default function Home() {
+
+  const { isSignedIn } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isSignedIn) {
+      router.push("/sign-up");
+    }
+  }, [isSignedIn, router]);
+
+  if (!isSignedIn) {
+    return null; // Or a loading spinner
+  }
+
   return (
     <div className="min-h-screen bg-black text-white">
 
