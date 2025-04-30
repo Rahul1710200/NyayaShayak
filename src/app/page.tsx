@@ -42,7 +42,7 @@ export default function Home() {
               NyayaSahayak
             </span>
             <br />
-            Your AI-Powered Legal Assistant
+            Your AI-Powered Blogs
           </h1>
           <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8">
             Simplifying Indian law with AI-driven insights and community-driven legal blogs.
