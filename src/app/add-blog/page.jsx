@@ -43,7 +43,7 @@ export default function AddBlog() {
     formData.append('imageUrl', coverPhoto);
 
     try {
-      const response = await axios.post('http://localhost:3000/api/blogs', formData, {
+      const response = await axios.post(`https://backedn-1-1by3.onrender.com/api/blogs`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

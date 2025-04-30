@@ -16,7 +16,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const blogsResponse = await axios.get('http://localhost:3000/api/blogs');
+        const blogsResponse = await axios.get(`https://backedn-1-1by3.onrender.com/api/blogs`);
         setBlogs(blogsResponse.data);
       } catch (error) {
         console.error('Error fetching blogs:', error);

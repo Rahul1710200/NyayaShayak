@@ -23,7 +23,7 @@ export default function BlogPost() {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/blogs/${id}`);
+        const response = await axios.get(`https://backedn-1-1by3.onrender.com/api/blogs/${id}`);
         const blogData = response.data;
         
         // If createby is a string (user ID), we'll just display the ID
@@ -67,7 +67,7 @@ export default function BlogPost() {
   
     try {
       const response = await axios.post(
-        `http://localhost:3000/api/blogs/comments/${id}`,
+        `https://backedn-1-1by3.onrender.com/api/blogs/comments/${id}`,
         { body:comment }
       );
   
