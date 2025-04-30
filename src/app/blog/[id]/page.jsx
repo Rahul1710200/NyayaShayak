@@ -5,15 +5,14 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import axios from 'axios';
 import { useUser } from '@clerk/nextjs';
-import { FileText, MessageSquare, ArrowRight, Send, User, X } from 'lucide-react';
+import { FileText, User, X } from 'lucide-react';
+import ChatInterface from '../../components/ChatInterface'; // Import the ChatInterface component
 
 export default function BlogPost() {
   const { id } = useParams();
   const router = useRouter();
   const [blog, setBlog] = useState(null);
   const [comment, setComment] = useState('');
-  const [chatMessage, setChatMessage] = useState('');
-  const [chatHistory, setChatHistory] = useState([]);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -26,8 +25,6 @@ export default function BlogPost() {
         const response = await axios.get(`https://backedn-1-1by3.onrender.com/api/blogs/${id}`);
         const blogData = response.data;
         
-        // If createby is a string (user ID), we'll just display the ID
-        // In a real app, you might want to fetch user details here
         if (typeof blogData.createby === 'string') {
           blogData.createby = { name: 'Anonymous' };
         }
@@ -68,10 +65,9 @@ export default function BlogPost() {
     try {
       const response = await axios.post(
         `https://backedn-1-1by3.onrender.com/api/blogs/comments/${id}`,
-        { body:comment }
+        { body: comment }
       );
   
-      // Add the new comment to state
       setBlog(prev => ({
         ...prev,
         comments: [...prev.comments, {
@@ -86,31 +82,6 @@ export default function BlogPost() {
     } catch (err) {
       console.error('Error adding comment:', err);
       alert(err.response?.data?.error || 'Failed to add comment');
-    }
-  };
-
-  // Handle AI chat submission
-  const handleChatSubmit = async (e) => {
-    e.preventDefault();
-    if (!chatMessage.trim()) return;
-
-    const userMessage = { sender: 'user', text: chatMessage };
-    setChatHistory([...chatHistory, userMessage]);
-    setChatMessage('');
-
-    try {
-      // Simulate AI response since we don't have actual xAI integration
-      setTimeout(() => {
-        const aiMessage = { 
-          sender: 'ai', 
-          text: "I'm an AI assistant. In a real implementation, I would provide helpful responses about this blog post."
-        };
-        setChatHistory(prev => [...prev, aiMessage]);
-      }, 1000);
-    } catch (err) {
-      console.error('Error in AI chat:', err);
-      const errorMessage = { sender: 'ai', text: 'Sorry, something went wrong. Please try again.' };
-      setChatHistory(prev => [...prev, errorMessage]);
     }
   };
 
@@ -150,7 +121,7 @@ export default function BlogPost() {
   }
 
   if (!blog) {
-    return null; // Should be handled by error state
+    return null;
   }
 
   return (
@@ -219,7 +190,6 @@ export default function BlogPost() {
                 type="submit"
                 className="self-end bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-6 rounded-full transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-primary-600/30"
               >
-                <Send className="w-5 h-5" />
                 <span>Submit</span>
               </button>
             </form>
@@ -246,59 +216,23 @@ export default function BlogPost() {
           </p>
           <button
             onClick={toggleChat}
-            className="inline-flex items-center bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-primary-600/30 hover:-translate-y-1 group"
+            className="inline-flex items-center bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-primary-600/30 hover:-translate-y-1"
           >
-            <MessageSquare className="w-5 h-5 mr-2" />
             Chat Now
-            <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
       </div>
 
       {/* AI Chat Widget */}
       {isChatOpen && (
-        <div className="fixed bottom-6 right-6 w-80 md:w-96 h-[500px] bg-gray-900 rounded-lg shadow-xl flex flex-col">
+        <div className="fixed bottom-6 right-6 w-80 md:w-[450px] h-[600px] bg-gray-900 rounded-lg shadow-xl flex flex-col">
           <div className="flex justify-between items-center p-4 border-b border-gray-700">
             <h3 className="text-lg font-semibold text-primary-500">AI Assistant</h3>
             <button onClick={toggleChat} className="text-gray-400 hover:text-white">
               <X className="w-5 h-5" />
             </button>
           </div>
-          <div className="flex-1 p-4 overflow-y-auto">
-            {chatHistory.map((msg, index) => (
-              <div
-                key={index}
-                className={`mb-4 ${msg.sender === 'user' ? 'text-right' : 'text-left'}`}
-              >
-                <p
-                  className={`inline-block p-3 rounded-lg ${
-                    msg.sender === 'user'
-                      ? 'bg-primary-600 text-white'
-                      : 'bg-gray-800 text-gray-300'
-                  }`}
-                >
-                  {msg.text}
-                </p>
-              </div>
-            ))}
-          </div>
-          <form onSubmit={handleChatSubmit} className="p-4 border-t border-gray-700">
-            <div className="flex space-x-2">
-              <input
-                type="text"
-                value={chatMessage}
-                onChange={(e) => setChatMessage(e.target.value)}
-                placeholder="Ask a question..."
-                className="flex-1 p-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
-              />
-              <button
-                type="submit"
-                className="bg-primary-600 hover:bg-primary-700 text-white p-2 rounded-lg"
-              >
-                <Send className="w-5 h-5" />
-              </button>
-            </div>
-          </form>
+          <ChatInterface blogContext={blog} /> {/* Pass blog context if needed */}
         </div>
       )}
     </div>

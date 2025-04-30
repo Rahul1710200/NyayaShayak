@@ -74,9 +74,9 @@ export default function Home() {
                   className="block bg-gray-800 rounded-lg overflow-hidden shadow-xl hover:shadow-orange-500/20 transition-all duration-300"
                 >
                   <div className="md:flex">
-                    {featuredBlogs[currentFeaturedIndex].coverphoto && (
+                    {featuredBlogs[currentFeaturedIndex].imageUrl && (
                       <img
-                        src={featuredBlogs[currentFeaturedIndex].coverphoto}
+                        src={featuredBlogs[currentFeaturedIndex].imageUrl}
                         alt={featuredBlogs[currentFeaturedIndex].title}
                         className="w-full md:w-1/3 h-64 md:h-auto object-cover"
                       />
